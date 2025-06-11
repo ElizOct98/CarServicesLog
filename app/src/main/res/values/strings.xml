@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CarServicesLog</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
+</resources>
