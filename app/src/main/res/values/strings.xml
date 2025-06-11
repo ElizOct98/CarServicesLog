@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">CarServicesLog</string>
-    <string name="user">User</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="log_in_message_error">Something went wrong :( </string>
+    <string name="reset_password_message">Reset password successfully </string>
+    <string name="log_in"> Log In</string>
+    <string name="new_user"> Register User</string>
+    <string name="forgot_my_password">Forgot my password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="register_user">Register</string>
+    <string name="forgot_your_password">Forgot your password</string>
+    <string name="enter_email_address">Please enter the email address you´d like your password reset information sent to</string>
+    <string name="request_link">Request reset link</string>
+    <string name="loading">Loading…</string>
+    <string name="log_out">Log Out</string>
+
 </resources>
