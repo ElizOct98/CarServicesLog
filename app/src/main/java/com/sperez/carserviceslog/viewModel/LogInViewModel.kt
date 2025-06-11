@@ -43,7 +43,7 @@ class LogInViewModel: ViewModel() {
         }
     }
 
-    fun dispatchEvent(event: CarServicesLogEvent) {
+    fun dispatchEventLogIn(event: CarServicesLogEvent) {
         viewModelScope.launch {
             _events.emit(event)
         }

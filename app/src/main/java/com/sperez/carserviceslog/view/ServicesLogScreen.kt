@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -40,48 +41,53 @@ fun ServicesLogScreen(
 
 ) {
     val uiState = remember { state }
-    LogTopAppBar(dispatchEventLogIn,dispatchEventLogs)
-    when(uiState.value){
-        ServicesLogState.DisplayingLogs -> DisplayLogs(modifier,dispatchEventLogs)
-        ServicesLogState.Error -> {
-            ModalBottomSheet(
-                onDismissRequest = {}
+    Scaffold (
+       modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.app_name))
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            dispatchEventLogIn(CarServicesLogEvent.SignOut)
+                        }
+                    ) {
+                        Icon(
+                            Icons.Filled.ExitToApp,
+                            contentDescription = stringResource(R.string.log_out)
+                        )
+                    }
+                }
+            )
+        },
+        floatingActionButton ={
+            FloatingActionButton(
+                onClick = { dispatchEventLogs(ServicesLogEvent.NavigateNewLog) }
             ) {
-                Text(stringResource((R.string.log_in_message_error)))
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = stringResource(R.string.add_new_log)
+                )
             }
         }
-        ServicesLogState.Loading -> LoadingLogs(modifier)
-    }
-}
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LogTopAppBar(dispatchEventLogIn: (CarServicesLogEvent) -> Unit, dispatchEventLogs: (ServicesLogEvent) ->Unit) {
-    TopAppBar(
-        title = {
-            Text(text = stringResource(R.string.app_name))
-        },
-        actions = {
-            IconButton(
-                onClick = {
-                dispatchEventLogIn(CarServicesLogEvent.SignOut)}
-            ){
-                    Icon(
-                        Icons.Filled.ExitToApp,
-                        contentDescription = stringResource(R.string.log_out)
-                    )
+    ){
+        innerPadding ->
+        when(uiState.value){
+            ServicesLogState.DisplayingLogs -> DisplayLogs(modifier.padding(innerPadding),dispatchEventLogs)
+            ServicesLogState.Error -> {
+                ModalBottomSheet(
+                    onDismissRequest = {}
+                ) {
+                    Text(stringResource((R.string.log_in_message_error)))
                 }
+            }
+            ServicesLogState.Loading -> LoadingLogs(modifier.padding(innerPadding))
         }
-
-    )
-    FloatingActionButton(
-        onClick = { dispatchEventLogs(ServicesLogEvent.NavigateLogDescription ) }
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Add,
-            contentDescription = stringResource(R.string.add_new_log)
-        )
     }
 }
+
 
 @Composable
 fun LoadingLogs(modifier: Modifier = Modifier){

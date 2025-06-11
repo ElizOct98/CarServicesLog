@@ -8,11 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -27,12 +23,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         auth = Firebase.auth
+
         val viewModelLogIn: LogInViewModel = viewModels<LogInViewModel>().value
-        val viewModelLogs: LogInViewModel = viewModels<ServicesLogViewModel>().value
+        val viewModelLogs: ServicesLogViewModel = viewModels<ServicesLogViewModel>().value
+
         setContent {
             CarServicesLogTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   LogInScreen(Modifier.padding(innerPadding), viewModel.currentState, viewModel::dispatchEvent)
+                   LogInScreen(
+                       Modifier.padding(innerPadding),
+                       viewModelLogIn.currentState,
+                       viewModelLogs.currentStateServicesLog,
+                       viewModelLogIn::dispatchEventLogIn,
+                       viewModelLogs::dispatchEventServicesLog
+                   )
                 }
             }
         }

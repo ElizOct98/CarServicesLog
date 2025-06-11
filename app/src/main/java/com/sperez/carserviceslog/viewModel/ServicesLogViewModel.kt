@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import com.sperez.carserviceslog.CarServicesLogEvent
 import com.sperez.carserviceslog.CarServicesLogState
+import com.sperez.carserviceslog.R
+import com.sperez.carserviceslog.ServicesLogEvent
 import com.sperez.carserviceslog.ServicesLogState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -15,30 +18,37 @@ import kotlinx.coroutines.launch
 class ServicesLogViewModel: ViewModel() {
 
 
-    private var _currentStateLogIn = mutableStateOf(CarServicesLogState.Logged)
-    private var _currentStateServicesLog = mutableStateOf(ServicesLogState.Loading)
 
-    val currentStateLogIn : State<CarServicesLogState> = _currentStateLogIn
+    private var _currentStateServicesLog = mutableStateOf<ServicesLogState>(ServicesLogState.Loading)
+
     val currentStateServicesLog : State<ServicesLogState> =  _currentStateServicesLog
 
-    private var _events = MutableSharedFlow<ServicesLogState>()
+    private var _events = MutableSharedFlow<ServicesLogEvent>()
+    val db = Firebase.firestore
+
 
 
     init {
         viewModelScope.launch {
             _events.collect{
                 when(it){
-                    ServicesLogState.DisplayingLogs -> TODO()
-                    ServicesLogState.Error -> TODO()
-                    ServicesLogState.Loading -> TODO()
+                    ServicesLogEvent.DisplayLogs -> displayLogs()
+                    ServicesLogEvent.NavigateLogDescription -> {}
+                    ServicesLogEvent.NavigateNewLog -> {}
                 }
             }
         }
     }
 
-    fun dispatchEvent(event: ServicesLogState) {
+    fun dispatchEventServicesLog(event: ServicesLogEvent) {
         viewModelScope.launch {
             _events.emit(event)
         }
     }
+
+    fun displayLogs(){
+        _currentStateServicesLog.value = ServicesLogState.DisplayingLogs
+    }
+
+
 }

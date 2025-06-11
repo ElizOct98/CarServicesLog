@@ -12,16 +12,13 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,17 +30,20 @@ import androidx.compose.ui.unit.dp
 import com.sperez.carserviceslog.CarServicesLogEvent
 import com.sperez.carserviceslog.CarServicesLogState
 import com.sperez.carserviceslog.R
-import kotlinx.coroutines.launch
+import com.sperez.carserviceslog.ServicesLogEvent
+import com.sperez.carserviceslog.ServicesLogState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LogInScreen(
     modifier: Modifier,
-    state: State<CarServicesLogState>,
-    dispatchEvent: (CarServicesLogEvent) -> Unit
-) {
-    val uiState = remember { state }
+    stateLogIn: State<CarServicesLogState>,
+    stateServicesLog: State<ServicesLogState>,
+    dispatchEventLogIn: (CarServicesLogEvent) -> Unit,
+    dispatchEventServicesLog: (ServicesLogEvent) -> Unit
+    ) {
+    val uiState = remember { stateLogIn }
     when(uiState.value){
         is CarServicesLogState.Error -> {
             ModalBottomSheet(
@@ -53,11 +53,14 @@ fun LogInScreen(
             }
         }
         CarServicesLogState.Loading -> Loading(modifier)
-        CarServicesLogState.Logged -> ServicesLogScreen(modifier,)
-        CarServicesLogState.NotLogged -> SignIn(modifier, dispatchEvent)
-        is CarServicesLogState.ResetPasswordSuccessful -> SignIn(modifier,dispatchEvent)
-        CarServicesLogState.CreateUser -> CreateNewUser(modifier, dispatchEvent)
-        CarServicesLogState.ForgotPassword -> ForgotPassword (modifier, dispatchEvent)
+        CarServicesLogState.Logged -> {
+            ServicesLogScreen(modifier,stateServicesLog,dispatchEventServicesLog,dispatchEventLogIn)
+            dispatchEventServicesLog(ServicesLogEvent.DisplayLogs)
+        }
+        CarServicesLogState.NotLogged -> SignIn(modifier, dispatchEventLogIn)
+        is CarServicesLogState.ResetPasswordSuccessful -> SignIn(modifier,dispatchEventLogIn)
+        CarServicesLogState.CreateUser -> CreateNewUser(modifier, dispatchEventLogIn)
+        CarServicesLogState.ForgotPassword -> ForgotPassword (modifier, dispatchEventLogIn)
     }
 }
 @Composable
@@ -170,8 +173,3 @@ fun ForgotPassword(modifier: Modifier = Modifier, dispatchEvent: (CarServicesLog
     }
 }
 
-@Composable
-@Preview
-fun Preview(){
-    Loading()
-}
