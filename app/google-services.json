@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "25511399215",
+    "project_id": "carserviceslog-81f40",
+    "storage_bucket": "carserviceslog-81f40.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25511399215:android:b30e4c669c46fb73139bda",
+        "android_client_info": {
+          "package_name": "com.sperez.carserviceslog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKitziwLv1-2A9Rk3N_iOalHFq5C7n1pE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
