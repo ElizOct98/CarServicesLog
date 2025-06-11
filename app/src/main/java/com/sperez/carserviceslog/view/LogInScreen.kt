@@ -44,7 +44,6 @@ fun LogInScreen(
     dispatchEvent: (CarServicesLogEvent) -> Unit
 ) {
     val uiState = remember { state }
-
     when(uiState.value){
         is CarServicesLogState.Error -> {
             ModalBottomSheet(
@@ -54,13 +53,7 @@ fun LogInScreen(
             }
         }
         CarServicesLogState.Loading -> Loading(modifier)
-        CarServicesLogState.Logged -> {
-            Button(onClick = {
-                dispatchEvent(CarServicesLogEvent.SignOut)
-            }, modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
-                Text(stringResource(R.string.log_out))
-            }
-        }
+        CarServicesLogState.Logged -> ServicesLogScreen(modifier,)
         CarServicesLogState.NotLogged -> SignIn(modifier, dispatchEvent)
         is CarServicesLogState.ResetPasswordSuccessful -> SignIn(modifier,dispatchEvent)
         CarServicesLogState.CreateUser -> CreateNewUser(modifier, dispatchEvent)

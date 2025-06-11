@@ -19,6 +19,7 @@ import com.google.firebase.auth.auth
 import com.sperez.carserviceslog.ui.theme.CarServicesLogTheme
 import com.sperez.carserviceslog.view.LogInScreen
 import com.sperez.carserviceslog.viewModel.LogInViewModel
+import com.sperez.carserviceslog.viewModel.ServicesLogViewModel
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth : FirebaseAuth
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         auth = Firebase.auth
-        val viewModel: LogInViewModel = viewModels<LogInViewModel>().value
+        val viewModelLogIn: LogInViewModel = viewModels<LogInViewModel>().value
+        val viewModelLogs: LogInViewModel = viewModels<ServicesLogViewModel>().value
         setContent {
             CarServicesLogTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
