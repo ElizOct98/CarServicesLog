@@ -14,12 +14,14 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -31,6 +33,8 @@ import com.sperez.carserviceslog.ui.theme.CarServicesLogTheme
 import com.sperez.carserviceslog.view.CarServicesLogEvent
 import com.sperez.carserviceslog.view.CreateNewUser
 import com.sperez.carserviceslog.view.DisplayLogs
+import com.sperez.carserviceslog.view.DisplayLogsFAB
+import com.sperez.carserviceslog.view.DisplayLogsTopBar
 import com.sperez.carserviceslog.view.ForgotPassword
 import com.sperez.carserviceslog.view.Loading
 import com.sperez.carserviceslog.view.NewServiceLogForm
@@ -60,6 +64,8 @@ class MainActivity : ComponentActivity() {
             }
 
             val navController = rememberNavController()
+            val backStackEntry by navController.currentBackStackEntryAsState()
+            val currentScreen = backStackEntry?.destination?.route
 
             viewModel.onCreate(navController, FirebaseAnalytics.getInstance(this))
 
@@ -86,8 +92,16 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                     modifier = Modifier.fillMaxSize(),
-                    topBar = viewModel.currentState.value.topBar,
-                    floatingActionButton = viewModel.currentState.value.floatingActionButton
+                    topBar = {
+                        if (currentScreen == Screen.ServicesLog.route || currentScreen == Screen.NewServiceLog.route) {
+                            DisplayLogsTopBar(viewModel::dispatchEvent)
+                        }
+                    },
+                    floatingActionButton = {
+                        if (currentScreen == Screen.ServicesLog.route) {
+                            DisplayLogsFAB(viewModel::dispatchEvent)
+                        }
+                    }
                 ) { innerPadding ->
                     if (viewModel.currentState.value.isLoading) {
                         Loading()
@@ -142,7 +156,6 @@ fun NavigationStack(
             dispatchEvent(CarServicesLogEvent.DisplayLogs)
         }
         composable(route = Screen.NewServiceLog.route) {
-            dispatchEvent(CarServicesLogEvent.HideFAB)
             NewServiceLogForm(modifier, dispatchEvent)
         }
     }

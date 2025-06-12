@@ -9,17 +9,15 @@ import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.analytics
+import com.sperez.carserviceslog.R
+import com.sperez.carserviceslog.model.ServicesLog
+import com.sperez.carserviceslog.navigation.Screen
 import com.sperez.carserviceslog.repository.AuthRepository
 import com.sperez.carserviceslog.repository.AuthResult
-import com.sperez.carserviceslog.view.CarServicesLogEvent
 import com.sperez.carserviceslog.repository.DataRepository
 import com.sperez.carserviceslog.repository.DataResult
-import com.sperez.carserviceslog.R
-import com.sperez.carserviceslog.navigation.Screen
+import com.sperez.carserviceslog.view.CarServicesLogEvent
 import com.sperez.carserviceslog.view.ViewState
-import com.sperez.carserviceslog.model.ServicesLog
-import com.sperez.carserviceslog.view.DisplayLogsFAB
-import com.sperez.carserviceslog.view.DisplayLogsTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
@@ -49,25 +47,9 @@ class CarServicesLogViewModel : ViewModel() {
                     CarServicesLogEvent.SignOut -> signOut()
                     CarServicesLogEvent.NavigateForgotPassword -> navController.navigate(Screen.ForgotPassword.route)
                     CarServicesLogEvent.NavigateNewUser ->  navController.navigate(Screen.NewUser)
-                    CarServicesLogEvent.DisplayLogs -> {
-                        _currentState.value = _currentState.value.copy(
-                            topBar = {
-                                DisplayLogsTopBar(::dispatchEvent)
-                            },
-                            floatingActionButton = {
-                                DisplayLogsFAB(::dispatchEvent)
-                            }
-                        )
-
-                        retrieveLogs()
-                    }
-                    CarServicesLogEvent.NavigateNewLog -> { navController.navigate(Screen.NewServiceLog.route) }
-                    is CarServicesLogEvent.NewServiceLog -> {
-                        addLog(it.newService)
-                    }
-                    CarServicesLogEvent.HideFAB -> {
-                        _currentState.value = _currentState.value.copy(floatingActionButton = {})
-                    }
+                    CarServicesLogEvent.DisplayLogs -> retrieveLogs()
+                    CarServicesLogEvent.NavigateNewLog -> navController.navigate(Screen.NewServiceLog.route)
+                    is CarServicesLogEvent.NewServiceLog -> addLog(it.newService)
                 }
             }
         }
