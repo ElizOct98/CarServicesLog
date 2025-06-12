@@ -30,7 +30,6 @@ import com.sperez.carserviceslog.view.ForgotPassword
 import com.sperez.carserviceslog.view.Loading
 import com.sperez.carserviceslog.view.SignIn
 import com.sperez.carserviceslog.viewModel.LogInViewModel
-import com.sperez.carserviceslog.viewModel.ServicesLogViewModel
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth : FirebaseAuth
@@ -39,25 +38,24 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         auth = Firebase.auth
 
-        val viewModelLogIn: LogInViewModel = viewModels<LogInViewModel>().value
-        val viewModelLogs: ServicesLogViewModel = viewModels<ServicesLogViewModel>().value
+        val viewModel: LogInViewModel = viewModels<LogInViewModel>().value
 
         setContent {
 
             val snackBarHostState = remember { SnackbarHostState() }
-            val errorMessageId = viewModelLogIn.currentState.value.errorMessage
+            val errorMessageId = viewModel.currentState.value.errorMessage
             val errorMessage = errorMessageId?.let {
                 stringResource(it)
             }
 
-            val successMessageId = viewModelLogIn.currentState.value.successMessage
+            val successMessageId = viewModel.currentState.value.successMessage
             val successMessage = successMessageId?.let {
                 stringResource(it)
             }
 
             val navController = rememberNavController()
 
-            viewModelLogIn.onCreate(navController)
+            viewModel.onCreate(navController)
 
             LaunchedEffect(errorMessageId) {
                 if (errorMessageId != null) {
@@ -65,7 +63,7 @@ class MainActivity : ComponentActivity() {
                         message = errorMessage ?: "",
                         duration = SnackbarDuration.Short,
                     )
-                    viewModelLogIn.clearMessages()
+                    viewModel.clearMessages()
                 }
             }
             LaunchedEffect(successMessageId) {
@@ -74,7 +72,7 @@ class MainActivity : ComponentActivity() {
                         message = successMessage ?: "",
                         duration = SnackbarDuration.Short,
                     )
-                    viewModelLogIn.clearMessages()
+                    viewModel.clearMessages()
                 }
             }
 
@@ -83,14 +81,14 @@ class MainActivity : ComponentActivity() {
                     snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                     modifier = Modifier.fillMaxSize(),
                 ) { innerPadding ->
-                    if (viewModelLogIn.currentState.value.isLoading) {
+                    if (viewModel.currentState.value.isLoading) {
                         Loading()
                     }
 
                     NavigationStack(
                         Modifier.padding(innerPadding),
-                        viewModelLogIn.isUserLogged(),
-                        viewModelLogIn::dispatchEvent,
+                        viewModel.isUserLogged(),
+                        viewModel::dispatchEvent,
                         navController
                     )
                 }
