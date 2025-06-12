@@ -157,8 +157,6 @@ class CarServicesLogViewModel : ViewModel() {
     }
 
     private fun retrieveLogs() {
-        //_currentState.value = _currentState.value.copy(isLoading = true)
-
         viewModelScope.launch {
             val currentUser = authRepository.getCurrentUser()
 
@@ -170,8 +168,6 @@ class CarServicesLogViewModel : ViewModel() {
                     _currentState.value = _currentState.value.copy(errorMessage = R.string.log_in_message_error)
                 }
             }
-
-            //_currentState.value = _currentState.value.copy(isLoading = false)
         }
     }
 
