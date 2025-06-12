@@ -101,8 +101,11 @@ fun LoadingLogs(modifier: Modifier = Modifier){
 
 @Composable
 fun DisplayLogs(modifier: Modifier = Modifier,dispatchEvent: (CarServicesLogEvent) -> Unit){
-    Column(modifier=modifier.fillMaxSize().clickable { dispatchEvent(CarServicesLogEvent.NavigateLogDescription ) }
-        , verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier=modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(modifier = Modifier.padding(top=16.dp), text = "Service")
         Text(modifier = Modifier.padding(top=16.dp), text = "Kilometers")
         Text(modifier = Modifier.padding(top=16.dp), text = "Date")
