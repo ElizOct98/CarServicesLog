@@ -8,7 +8,8 @@ import kotlinx.coroutines.tasks.await
 
 class DataRepository: IDataRepository {
 
-    val fireStore = Firebase.firestore
+    private val fireStore = Firebase.firestore
+
     override suspend fun addNewLog(
         userId: String,
         log: ServicesLog

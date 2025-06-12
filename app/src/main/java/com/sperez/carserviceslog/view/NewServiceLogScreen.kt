@@ -41,7 +41,7 @@ fun NewServiceLogForm(modifier: Modifier = Modifier, dispatchEvent: (CarServices
         mutableStateOf("")
     }
 
-    Column (modifier = modifier.fillMaxSize().padding(horizontal = 32.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
+    Column (modifier = modifier.fillMaxSize().padding(horizontal = 32.dp), horizontalAlignment = Alignment.CenterHorizontally){
         Text(text = stringResource(R.string.add_new_service))
         TextField(
             modifier = Modifier.fillMaxWidth(),

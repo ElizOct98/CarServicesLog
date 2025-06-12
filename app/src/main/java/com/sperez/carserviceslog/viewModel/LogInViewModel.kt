@@ -4,24 +4,36 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.sperez.carserviceslog.AuthRepository
 import com.sperez.carserviceslog.AuthResult
 import com.sperez.carserviceslog.CarServicesLogEvent
+import com.sperez.carserviceslog.DataRepository
+import com.sperez.carserviceslog.DataResult
 import com.sperez.carserviceslog.R
 import com.sperez.carserviceslog.Screen
 import com.sperez.carserviceslog.ViewState
+import com.sperez.carserviceslog.model.ServicesLog
+import com.sperez.carserviceslog.view.DisplayLogsFAB
+import com.sperez.carserviceslog.view.DisplayLogsTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 
 class LogInViewModel : ViewModel() {
 
-    private var authRepository = AuthRepository()
+    private val authRepository = AuthRepository()
+    private val dataRepository = DataRepository()
+
     private var _currentState = mutableStateOf(ViewState())
 
     val currentState : State<ViewState> = _currentState
     private var _events = MutableSharedFlow<CarServicesLogEvent>()
+
+    private val _logs = mutableStateOf(listOf<ServicesLog>())
+    val logs : State<List<ServicesLog>> = _logs
+
     private lateinit var navController: NavController
 
     init {
@@ -34,9 +46,25 @@ class LogInViewModel : ViewModel() {
                     CarServicesLogEvent.SignOut -> signOut()
                     CarServicesLogEvent.NavigateForgotPassword -> navController.navigate(Screen.ForgotPassword.route)
                     CarServicesLogEvent.NavigateNewUser ->  navController.navigate(Screen.NewUser)
-                    CarServicesLogEvent.DisplayLogs -> {}
-                    CarServicesLogEvent.NavigateNewLog -> {}
-                    is CarServicesLogEvent.NewServiceLog -> {}
+                    CarServicesLogEvent.DisplayLogs -> {
+                        _currentState.value = _currentState.value.copy(
+                            topBar = {
+                                DisplayLogsTopBar(::dispatchEvent)
+                            },
+                            floatingActionButton = {
+                                DisplayLogsFAB(::dispatchEvent)
+                            }
+                        )
+
+                        retrieveLogs()
+                    }
+                    CarServicesLogEvent.NavigateNewLog -> { navController.navigate(Screen.NewServiceLog.route) }
+                    is CarServicesLogEvent.NewServiceLog -> {
+                        addLog(it.newService)
+                    }
+                    CarServicesLogEvent.HideFAB -> {
+                        _currentState.value = _currentState.value.copy(floatingActionButton = {})
+                    }
                 }
             }
         }
@@ -110,5 +138,40 @@ class LogInViewModel : ViewModel() {
     private fun signOut() {
         authRepository.signOut()
         navController.navigate(Screen.Login.route)
+    }
+
+    private fun retrieveLogs() {
+        //_currentState.value = _currentState.value.copy(isLoading = true)
+
+        viewModelScope.launch {
+            val currentUser = authRepository.getCurrentUser()
+
+            if (currentUser != null) {
+                val result = dataRepository.getUserLogs(currentUser.uid)
+                if (result is DataResult.GetDataSuccess) {
+                    _logs.value = result.logs
+                } else {
+                    _currentState.value = _currentState.value.copy(errorMessage = R.string.log_in_message_error)
+                }
+            }
+
+            //_currentState.value = _currentState.value.copy(isLoading = false)
+        }
+    }
+
+    private fun addLog(log: ServicesLog) {
+        viewModelScope.launch {
+            val currentUser = authRepository.getCurrentUser()
+
+            if (currentUser != null) {
+                val result = dataRepository.addNewLog(currentUser.uid, log)
+                if (result is DataResult.Completed) {
+                    _currentState.value = _currentState.value.copy(successMessage = R.string.user_register_success)
+                    navController.popBackStack()
+                } else {
+                    _currentState.value = _currentState.value.copy(errorMessage = R.string.log_in_message_error)
+                }
+            }
+        }
     }
 }
