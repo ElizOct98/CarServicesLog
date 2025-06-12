@@ -1,4 +1,4 @@
-package com.sperez.carserviceslog
+package com.sperez.carserviceslog.repository
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
+import com.sperez.carserviceslog.R
 import kotlinx.coroutines.tasks.await
 
 class AuthRepository: IAuthRepository {

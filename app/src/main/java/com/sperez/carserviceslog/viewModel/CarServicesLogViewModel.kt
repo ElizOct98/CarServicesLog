@@ -1,19 +1,22 @@
 package com.sperez.carserviceslog.viewModel
 
+import android.os.Bundle
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.sperez.carserviceslog.AuthRepository
-import com.sperez.carserviceslog.AuthResult
-import com.sperez.carserviceslog.CarServicesLogEvent
-import com.sperez.carserviceslog.DataRepository
-import com.sperez.carserviceslog.DataResult
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.analytics
+import com.sperez.carserviceslog.repository.AuthRepository
+import com.sperez.carserviceslog.repository.AuthResult
+import com.sperez.carserviceslog.view.CarServicesLogEvent
+import com.sperez.carserviceslog.repository.DataRepository
+import com.sperez.carserviceslog.repository.DataResult
 import com.sperez.carserviceslog.R
-import com.sperez.carserviceslog.Screen
-import com.sperez.carserviceslog.ViewState
+import com.sperez.carserviceslog.navigation.Screen
+import com.sperez.carserviceslog.view.ViewState
 import com.sperez.carserviceslog.model.ServicesLog
 import com.sperez.carserviceslog.view.DisplayLogsFAB
 import com.sperez.carserviceslog.view.DisplayLogsTopBar
@@ -21,12 +24,13 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 
-class LogInViewModel : ViewModel() {
+class CarServicesLogViewModel : ViewModel() {
 
     private val authRepository = AuthRepository()
     private val dataRepository = DataRepository()
-
+    lateinit var analytics: FirebaseAnalytics
     private var _currentState = mutableStateOf(ViewState())
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     val currentState : State<ViewState> = _currentState
     private var _events = MutableSharedFlow<CarServicesLogEvent>()
@@ -70,8 +74,10 @@ class LogInViewModel : ViewModel() {
         }
     }
 
-    fun onCreate(navController: NavController) {
+    fun onCreate(navController: NavController,analytics: FirebaseAnalytics) {
         this.navController = navController
+        this.analytics = analytics
+        firebaseAnalytics = Firebase.analytics
     }
 
     fun dispatchEvent(event: CarServicesLogEvent) {
@@ -126,12 +132,22 @@ class LogInViewModel : ViewModel() {
             val result = authRepository.signIn(user, password)
 
             if (result is AuthResult.SignInSuccess) {
+                logSigInEvent()
                 navController.navigate(Screen.ServicesLog.route)
             } else if (result is AuthResult.Error) {
                 _currentState.value = _currentState.value.copy(errorMessage = result.message)
             }
 
             _currentState.value = _currentState.value.copy(isLoading = false)
+        }
+    }
+    private fun logSigInEvent(){
+        val currentUser = authRepository.getCurrentUser()
+        currentUser?.uid?.let{ userId ->
+            val params = Bundle().apply{
+                putString("user_id", userId)
+            }
+            analytics.logEvent("user_login", params)
         }
     }
 

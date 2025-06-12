@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.sperez.carserviceslog.CarServicesLogEvent
 import com.sperez.carserviceslog.R
 import com.sperez.carserviceslog.model.ServicesLog
 

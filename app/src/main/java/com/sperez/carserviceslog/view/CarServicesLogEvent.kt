@@ -1,4 +1,4 @@
-package com.sperez.carserviceslog
+package com.sperez.carserviceslog.view
 
 import androidx.compose.runtime.Composable
 import com.sperez.carserviceslog.model.ServicesLog

@@ -55,6 +55,7 @@ dependencies {
 
 
     implementation(libs.androidx.navigation)
+    implementation(libs.firebase.analytics)
 
 
     testImplementation(libs.junit)

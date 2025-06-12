@@ -22,17 +22,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.sperez.carserviceslog.model.ServicesLog
+import com.sperez.carserviceslog.navigation.Screen
 import com.sperez.carserviceslog.ui.theme.CarServicesLogTheme
+import com.sperez.carserviceslog.view.CarServicesLogEvent
 import com.sperez.carserviceslog.view.CreateNewUser
 import com.sperez.carserviceslog.view.DisplayLogs
 import com.sperez.carserviceslog.view.ForgotPassword
 import com.sperez.carserviceslog.view.Loading
 import com.sperez.carserviceslog.view.NewServiceLogForm
 import com.sperez.carserviceslog.view.SignIn
-import com.sperez.carserviceslog.viewModel.LogInViewModel
+import com.sperez.carserviceslog.viewModel.CarServicesLogViewModel
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth : FirebaseAuth
@@ -41,7 +44,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         auth = Firebase.auth
 
-        val viewModel: LogInViewModel = viewModels<LogInViewModel>().value
+        val viewModel: CarServicesLogViewModel = viewModels<CarServicesLogViewModel>().value
 
         setContent {
 
@@ -58,7 +61,7 @@ class MainActivity : ComponentActivity() {
 
             val navController = rememberNavController()
 
-            viewModel.onCreate(navController)
+            viewModel.onCreate(navController, FirebaseAnalytics.getInstance(this))
 
             LaunchedEffect(errorMessageId) {
                 if (errorMessageId != null) {

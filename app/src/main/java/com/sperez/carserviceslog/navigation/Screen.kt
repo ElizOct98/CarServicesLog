@@ -1,4 +1,4 @@
-package com.sperez.carserviceslog
+package com.sperez.carserviceslog.navigation
 
 sealed class Screen(val route: String) {
     data object Login: Screen("log_in_screen")

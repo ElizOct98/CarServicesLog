@@ -1,8 +1,9 @@
-package com.sperez.carserviceslog
+package com.sperez.carserviceslog.repository
 
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.sperez.carserviceslog.R
 import com.sperez.carserviceslog.model.ServicesLog
 import kotlinx.coroutines.tasks.await
 
