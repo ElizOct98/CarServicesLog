@@ -24,7 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.sperez.carserviceslog.R
@@ -59,7 +62,7 @@ fun SignIn(
         mutableStateOf("")
     }
     Column (modifier = modifier.fillMaxSize().padding(horizontal = 32.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
-        Text(text = "LogIn")
+        Text(text = stringResource(R.string.log_in),fontSize = 25.sp,modifier=Modifier.padding(bottom = 10.dp))
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = user,
@@ -98,7 +101,7 @@ fun CreateNewUser(modifier: Modifier = Modifier, dispatchEvent: (CarServicesLogE
     }
 
     Column (modifier = modifier.fillMaxSize().padding(horizontal = 32.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
-        Text(text = stringResource(R.string.register_user))
+        Text(text = stringResource(R.string.register_user),fontSize = 25.sp,modifier=Modifier.padding(bottom = 10.dp))
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = user,
@@ -129,9 +132,9 @@ fun CreateNewUser(modifier: Modifier = Modifier, dispatchEvent: (CarServicesLogE
 
 @Composable
 fun ForgotPassword(modifier: Modifier = Modifier, dispatchEvent: (CarServicesLogEvent) -> Unit){
-    Column (modifier=modifier.fillMaxSize(),verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
-        Text(text = stringResource(R.string.forgot_your_password))
-        Text(text = stringResource(R.string.enter_email_address))
+    Column (modifier=modifier.fillMaxSize().padding(horizontal = 32.dp),verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
+        Text(text = stringResource(R.string.forgot_your_password),fontSize = 25.sp)
+        Text(text = stringResource(R.string.enter_email_address),modifier=Modifier.padding(10.dp))
         var user by remember {
             mutableStateOf("")
         }
