@@ -23,7 +23,6 @@ import com.sperez.carserviceslog.view.DisplayLogsTopBar
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
-
 class CarServicesLogViewModel : ViewModel() {
 
     private val authRepository = AuthRepository()
@@ -178,7 +177,7 @@ class CarServicesLogViewModel : ViewModel() {
             if (currentUser != null) {
                 val result = dataRepository.addNewLog(currentUser.uid, log)
                 if (result is DataResult.Completed) {
-                    _currentState.value = _currentState.value.copy(successMessage = R.string.user_register_success)
+                    _currentState.value = _currentState.value.copy(successMessage = R.string.new_service_success)
                     navController.popBackStack()
                 } else {
                     _currentState.value = _currentState.value.copy(errorMessage = R.string.log_in_message_error)
