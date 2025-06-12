@@ -7,6 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -28,6 +32,7 @@ import com.sperez.carserviceslog.view.CreateNewUser
 import com.sperez.carserviceslog.view.DisplayLogs
 import com.sperez.carserviceslog.view.ForgotPassword
 import com.sperez.carserviceslog.view.Loading
+import com.sperez.carserviceslog.view.NewServiceLogForm
 import com.sperez.carserviceslog.view.SignIn
 import com.sperez.carserviceslog.viewModel.LogInViewModel
 
@@ -80,6 +85,16 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                     modifier = Modifier.fillMaxSize(),
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = { navController.navigate(Screen.NewServiceLog.route) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = stringResource(R.string.add_new_log)
+                            )
+                        }
+                    }
                 ) { innerPadding ->
                     if (viewModel.currentState.value.isLoading) {
                         Loading()
@@ -131,7 +146,7 @@ fun NavigationStack(
             DisplayLogs(modifier, dispatchEvent)
         }
         composable(route = Screen.NewServiceLog.route) {
-
+            NewServiceLogForm(modifier, dispatchEvent)
         }
     }
 }

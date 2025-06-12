@@ -34,8 +34,9 @@ class LogInViewModel : ViewModel() {
                     CarServicesLogEvent.SignOut -> signOut()
                     CarServicesLogEvent.NavigateForgotPassword -> navController.navigate(Screen.ForgotPassword.route)
                     CarServicesLogEvent.NavigateNewUser ->  navController.navigate(Screen.NewUser)
-                    CarServicesLogEvent.DisplayLogs -> TODO()
-                    CarServicesLogEvent.NavigateNewLog -> TODO()
+                    CarServicesLogEvent.DisplayLogs -> {}
+                    CarServicesLogEvent.NavigateNewLog -> {}
+                    is CarServicesLogEvent.NewServiceLog -> {}
                 }
             }
         }

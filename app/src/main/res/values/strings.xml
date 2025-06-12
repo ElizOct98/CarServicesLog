@@ -19,5 +19,12 @@
     <string name="invalid_credentials_error">Invalid credentials: Check your information and try again</string>
     <string name="invalid_user">There is not an associated user with the provided email</string>
     <string name="email_already_in_use_error">Email already in use.</string>
+    <string name="add_new_service">Add new service</string>
+    <string name="car_name">Car model</string>
+    <string name="kilometers"> Actual kilometers</string>
+    <string name="date">Date</string>
+    <string name="price">Price</string>
+    <string name="description">Description of the service</string>
+    <string name="save_service">Save</string>
 
 </resources>

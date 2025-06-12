@@ -1,5 +1,7 @@
 package com.sperez.carserviceslog
 
+import com.sperez.carserviceslog.model.ServicesLog
+
 sealed class CarServicesLogEvent {
     data class SignIn(val user: String, val password: String) : CarServicesLogEvent()
     data object SignOut : CarServicesLogEvent()
@@ -9,6 +11,7 @@ sealed class CarServicesLogEvent {
     data object NavigateForgotPassword: CarServicesLogEvent()
     data object DisplayLogs : CarServicesLogEvent()
     data object NavigateNewLog: CarServicesLogEvent()
+    data class NewServiceLog(val newService: ServicesLog) : CarServicesLogEvent()
 }
 
 data class ViewState(
