@@ -28,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sperez.carserviceslog.CarServicesLogEvent
 import com.sperez.carserviceslog.R
-import com.sperez.carserviceslog.ServicesLogEvent
 import com.sperez.carserviceslog.ServicesLogState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,8 +35,7 @@ import com.sperez.carserviceslog.ServicesLogState
 fun ServicesLogScreen(
     modifier: Modifier,
     state: State<ServicesLogState>,
-    dispatchEventLogs: (ServicesLogEvent) -> Unit,
-    dispatchEventLogIn: (CarServicesLogEvent) -> Unit
+    dispatchEvent: (CarServicesLogEvent) -> Unit
 
 ) {
     val uiState = remember { state }
@@ -51,7 +49,7 @@ fun ServicesLogScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            dispatchEventLogIn(CarServicesLogEvent.SignOut)
+                            dispatchEvent(CarServicesLogEvent.SignOut)
                         }
                     ) {
                         Icon(
@@ -64,7 +62,7 @@ fun ServicesLogScreen(
         },
         floatingActionButton ={
             FloatingActionButton(
-                onClick = { dispatchEventLogs(ServicesLogEvent.NavigateNewLog) }
+                onClick = { dispatchEvent(CarServicesLogEvent.NavigateNewLog) }
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
@@ -75,7 +73,7 @@ fun ServicesLogScreen(
     ){
         innerPadding ->
         when(uiState.value){
-            ServicesLogState.DisplayingLogs -> DisplayLogs(modifier.padding(innerPadding),dispatchEventLogs)
+            ServicesLogState.DisplayingLogs -> DisplayLogs(modifier.padding(innerPadding),dispatchEvent)
             ServicesLogState.Error -> {
                 ModalBottomSheet(
                     onDismissRequest = {}
@@ -102,8 +100,8 @@ fun LoadingLogs(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun DisplayLogs(modifier: Modifier = Modifier,dispatchEvent: (ServicesLogEvent) -> Unit){
-    Column(modifier=modifier.fillMaxSize().clickable { dispatchEvent(ServicesLogEvent.NavigateLogDescription ) }
+fun DisplayLogs(modifier: Modifier = Modifier,dispatchEvent: (CarServicesLogEvent) -> Unit){
+    Column(modifier=modifier.fillMaxSize().clickable { dispatchEvent(CarServicesLogEvent.NavigateLogDescription ) }
         , verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(modifier = Modifier.padding(top=16.dp), text = "Service")
         Text(modifier = Modifier.padding(top=16.dp), text = "Kilometers")

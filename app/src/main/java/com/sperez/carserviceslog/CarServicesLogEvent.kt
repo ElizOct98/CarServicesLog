@@ -7,15 +7,12 @@ sealed class CarServicesLogEvent {
     data class ForgotPassword(val user: String) : CarServicesLogEvent()
     data object NavigateNewUser: CarServicesLogEvent()
     data object NavigateForgotPassword: CarServicesLogEvent()
+    data object DisplayLogs : CarServicesLogEvent()
+    data object NavigateNewLog: CarServicesLogEvent()
 }
 
-sealed class CarServicesLogState{
-    data object NotLogged : CarServicesLogState()
-    data object Logged : CarServicesLogState()
-    data object CreateUser : CarServicesLogState()
-    data object ForgotPassword : CarServicesLogState()
-    data object Loading : CarServicesLogState()
-
-    data class Error(val message: Int) : CarServicesLogState()
-    data class ResetPasswordSuccessful(val message: Int): CarServicesLogState()
-}
+data class ViewState(
+    val isLoading: Boolean = false,
+    val errorMessage: Int? = null,
+    val successMessage: Int? = null,
+)

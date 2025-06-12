@@ -15,5 +15,9 @@
     <string name="loading">Loading…</string>
     <string name="log_out">Log Out</string>
     <string name="add_new_log">Add new log floating Action Button</string>
+    <string name="user_register_success">The user has been registered successfully</string>
+    <string name="invalid_credentials_error">Invalid credentials: Check your information and try again</string>
+    <string name="invalid_user">There is not an associated user with the provided email</string>
+    <string name="email_already_in_use_error">Email already in use.</string>
 
 </resources>

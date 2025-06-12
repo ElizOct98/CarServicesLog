@@ -5,11 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
-import com.sperez.carserviceslog.CarServicesLogEvent
-import com.sperez.carserviceslog.CarServicesLogState
-import com.sperez.carserviceslog.R
 import com.sperez.carserviceslog.ServicesLogEvent
 import com.sperez.carserviceslog.ServicesLogState
 import kotlinx.coroutines.flow.MutableSharedFlow
