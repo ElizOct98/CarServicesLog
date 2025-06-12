@@ -5,23 +5,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,7 +28,6 @@ import com.sperez.carserviceslog.view.CreateNewUser
 import com.sperez.carserviceslog.view.DisplayLogs
 import com.sperez.carserviceslog.view.ForgotPassword
 import com.sperez.carserviceslog.view.Loading
-import com.sperez.carserviceslog.view.ServicesLogScreen
 import com.sperez.carserviceslog.view.SignIn
 import com.sperez.carserviceslog.viewModel.LogInViewModel
 import com.sperez.carserviceslog.viewModel.ServicesLogViewModel
@@ -139,7 +132,7 @@ fun NavigationStack(
         composable(route = Screen.ServicesLog.route) {
             DisplayLogs(modifier, dispatchEvent)
         }
-        composable(route = Screen.ServiceDetail.route) {
+        composable(route = Screen.NewServiceLog.route) {
 
         }
     }
